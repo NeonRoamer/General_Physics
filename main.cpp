@@ -59,8 +59,8 @@ int main()
   //if(random_obj){random_objects();}
   
   vector<Celestial_object> objects;
-  Celestial_object earth(vector<double>(3, 0), vector<double>(3, 0), 6.378e6, 5.972e24);
-  Celestial_object moon(vector<double>{3.844e8, 0, 0}, vector<double>{0, 1022, 0}, 1.17374e6, 7.34767309e22);
+  Celestial_object earth(vector<double>(3, 0), vector<double>(3, 0), 6.378e6, 5.972e30);
+  Celestial_object moon(vector<double>{3.844e8, 0, 0}, vector<double>{0, 1022, 0}, 1.17374e6, 7.34767309e30);
   objects.push_back(earth);
   objects.push_back(moon);
   centre_of_mass(objects);
