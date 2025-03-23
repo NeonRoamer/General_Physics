@@ -6,6 +6,7 @@
 #include<cmath>
 #include<string>
 #include<sstream>
+#include<memory>
 #include "global.h"
 #include "celestial_object.h"
 
@@ -17,6 +18,7 @@ void centre_of_mass(vector<Celestial_object>& objects)
 {
   vector<double> centre_mass_coord{vector<double>(3)};
   double mass{total_mass(objects)};
+
   for(int i{0}; i< 3; ++i)
   {
     for(int j{0}; j < objects.size(); ++j){centre_mass_coord[i] += objects[j].get_mass() * objects[j].coordinate[i];}
@@ -25,7 +27,7 @@ void centre_of_mass(vector<Celestial_object>& objects)
 
   for(int i{0}; i< 3; ++i)
   {
-    for(int j{0}; j < objects.size(); ++j){objects[j].coordinate[i] = objects[j].coordinate[i] - centre_mass_coord[i];}
+    for(int j{0}; j < objects.size(); ++j){objects[j].coordinate[i] -= centre_mass_coord[i];}
   }
 }
 
@@ -55,12 +57,15 @@ double total_mass(vector<Celestial_object>& objects)
 
 int main()
 {
+  double distance_earth_moon{3.844e8};
+  double circular_velocity = 1e6* sqrt(gravitational_constant * 5.972e24 / 5.972e22);
   std::ofstream file(data_file, std::ofstream::trunc);
-  //if(random_obj){random_objects();}
+
   
   vector<Celestial_object> objects;
-  Celestial_object earth(vector<double>(3, 0), vector<double>(3, 0), 6.378e6, 5.972e30);
-  Celestial_object moon(vector<double>{3.844e8, 0, 0}, vector<double>{0, 1022, 0}, 1.17374e6, 7.34767309e30);
+  objects.reserve(2);
+  Celestial_object earth(vector<double>(3,0), vector<double>(3,0), 6.378e6, 5.972e24);
+  Celestial_object moon(vector<double>{distance_earth_moon, 0, 0}, std::vector<double>{0, circular_velocity, 0}, 1.17374e6, 7.34767309e22);
   objects.push_back(earth);
   objects.push_back(moon);
   centre_of_mass(objects);
@@ -71,7 +76,7 @@ int main()
     for(int j{0}; j < objects.size()-1; ++j){for(int k{j+1}; k < objects.size(); ++k){objects[j].acceleration_between(objects[k]);}}
     for(int j{0}; j < objects.size(); ++j)
     {
-      if(remainder(i, output_time) == 0)
+      if(remainder(i * delta_time, output_time) == 0)
       {
         oss << "  ";
         for (int k = 0; k < 3; ++k) 
@@ -87,7 +92,7 @@ int main()
       objects[j].update_acceleration();
       objects[j].reset_acceleration();
     }
-    if(remainder(i, output_time) == 0){oss << '\n';}
+    if(remainder(i * delta_time, output_time) == 0){oss << '\n';}
     if(oss.rdbuf()->pubseekoff(0, std::ios::end, std::ios::in) > (5 * 1024 * 1024))
     {
       file << oss.str();

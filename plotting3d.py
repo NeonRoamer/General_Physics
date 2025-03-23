@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib import colors, cm
 
 paths = {}
-with open("C:\\Users\\veerk\\Downloads\\celestial_object_simulation(1).txt", "r") as file:
+with open("celestial_object_simulation.txt", "r") as file:
 	for line in file:
 		line = np.array(line.strip("\n").split(", "), dtype=float)
 		for i in range(int(len(line)/4)):
@@ -26,3 +26,4 @@ ax.set_ylabel("Y")
 ax.set_zlabel("Z")
 ax.legend()
 plt.show()
+print("Finished Program")
