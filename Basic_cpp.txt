@@ -1,0 +1,16 @@
+Important things to know:
+1 all variables and functions need to say what type of variable is being outputted (int, string, vector, etc)
+2 float exists in c++ but is a smaller size the equivalent of python float is called double (as in double the length of float)
+3 void means it returns nothing
+4 vectors can only hold one type of variable wich needs to be specified (eg vector<int>)
+5 the & symbol in the functions inputs means instead of making a copy of the input it uses the same one (this is for optimisation)
+6 for loops are split into three bits   for(int i{0}; i<4; ++i)
+  the int i{0} is creating a variable i that is an int with a value of 0. This is done once in the for loops
+  the i<4 is the condition for the foor loop to end
+  the ++i means in each loop the value of i is increased by 1.
+7 int variable{3}; is the equivalent of int variable = 3 but is faster.
+8 whitespace means nothing in c++ instead the use of {} are used the say what is within the loop, function, etc
+9 // is to comment the quivalent of # in python
+
+Classes
+1 int, float, string are classes. I have made a class called celestial_object.

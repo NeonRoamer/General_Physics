@@ -1,27 +1,36 @@
-#include<vector>
-#include<random>
-#include<iostream>
-#include<fstream>
-#include<cstdio>
-#include<cmath>
-#include<string>
-#include<sstream>
-#include<memory>
-#include "global.h"
-#include "celestial_object.h"
+// Equivalent of import
+#include<vector> // std::vector
+#include<random> // for random numbers not currently used
+#include<iostream> // std::cout (print), std::cin (input)
+#include<fstream> // to do with strings
+#include<cstdio> // allows reading and writing from a file
+#include<cmath> // allows more mathematical operations like sqrt
+#include<string> // std::string
+#include<sstream> // allows the storage of strings in a buffer before being displayed it's for optimisation
+#include<memory> // smart pointers (currently not in use)
+#include "global.h" // This allows the use of the  file global.h and global.cpp
+#include "celestial_object.h" // This allows the use of the  file Celestial_objects.h and Celestial_objects.cpp
 
+//allows the use of vector instead of std::vector
 using std::vector;
+
+// This line says that there is a function called total_mass in this file.
 double total_mass(vector<Celestial_object>& objects);
 
-
+// Function called centre of mass that takes in a vector of Celestial Objects.
+// Void means it returns nothing
 void centre_of_mass(vector<Celestial_object>& objects)
 {
+  // This creates a vector holding double (equivalent of python float). vector<double>(3) means it has a length 0f 3.
   vector<double> centre_mass_coord{vector<double>(3)};
   double mass{total_mass(objects)};
 
   for(int i{0}; i< 3; ++i)
   {
-    for(int j{0}; j < objects.size(); ++j){centre_mass_coord[i] += objects[j].get_mass() * objects[j].coordinate[i];}
+    for(int j{0}; j < objects.size(); ++j)
+    {
+      centre_mass_coord[i] += objects[j].get_mass() * objects[j].coordinate[i];
+    }
     centre_mass_coord[i] = centre_mass_coord[i] / mass;
   }
 
@@ -73,7 +82,9 @@ int main()
   std::ostringstream oss;
   for(int i{0}; i < total_time / delta_time; ++i)
   {
-    for(int j{0}; j < objects.size()-1; ++j){for(int k{j+1}; k < objects.size(); ++k){objects[j].acceleration_between(objects[k]);}}
+    for(int j{0}; j < objects.size()-1; ++j){for(int k{j+1}; k < objects.size(); ++k){
+      objects[j].acceleration_between(objects[k]);
+    }}
     for(int j{0}; j < objects.size(); ++j)
     {
       if(remainder(i * delta_time, output_time) == 0)
@@ -81,7 +92,7 @@ int main()
         oss << "  ";
         for (int k = 0; k < 3; ++k) 
         {
-          oss << objects[j].coordinate[k];
+          oss << std::round(objects[j].coordinate[k]);
           oss << ", ";
         }
         oss << objects[j].get_radius();
