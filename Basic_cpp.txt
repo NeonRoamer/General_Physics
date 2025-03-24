@@ -7,10 +7,17 @@ Important things to know:
 6 for loops are split into three bits   for(int i{0}; i<4; ++i)
   the int i{0} is creating a variable i that is an int with a value of 0. This is done once in the for loops
   the i<4 is the condition for the foor loop to end
-  the ++i means in each loop the value of i is increased by 1.
+  the ++i is the equivalent to i += 1 or i = i+1 this is repeated at the end of every loop.
 7 int variable{3}; is the equivalent of int variable = 3 but is faster.
 8 whitespace means nothing in c++ instead the use of {} are used the say what is within the loop, function, etc
 9 // is to comment the quivalent of # in python
 
 Classes
 1 int, float, string are classes. I have made a class called celestial_object.
+2 same as with append to a list in python is how you use member functions of the class. 
+  For example mylist.append(3) in python and celestial_object.get_mass()
+  the get_mass() can be any member function in the class. These can all be viewed in the corresponding .h file
+3 the .h file includes the class and functions which are one line. If the function is more than 
+  one line only the initialisation of it is in the .h file. Then the function is written in the .cpp file with the same name.
+  In the .cpp file the functions will have Celestial_object:: between the return type and function name this is to signify it is
+  part of the class Celestial_object.

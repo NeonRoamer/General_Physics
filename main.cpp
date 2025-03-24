@@ -18,6 +18,7 @@ using std::vector;
 double total_mass(vector<Celestial_object>& objects);
 
 // Function called centre of mass that takes in a vector of Celestial Objects.
+// Should find the centre of mass and change the positions of all celestial objects to make the centre of mass at (0, 0, 0)
 // Void means it returns nothing
 void centre_of_mass(vector<Celestial_object>& objects)
 {
@@ -25,8 +26,10 @@ void centre_of_mass(vector<Celestial_object>& objects)
   vector<double> centre_mass_coord{vector<double>(3)};
   double mass{total_mass(objects)};
 
+  // Loops 3 times
   for(int i{0}; i< 3; ++i)
   {
+    // Loops the same number of times as the size of objects
     for(int j{0}; j < objects.size(); ++j)
     {
       centre_mass_coord[i] += objects[j].get_mass() * objects[j].coordinate[i];
@@ -40,6 +43,7 @@ void centre_of_mass(vector<Celestial_object>& objects)
   }
 }
 
+// Finds the total mass of the object
 double total_mass(vector<Celestial_object>& objects)
 {
   double mass{0};
@@ -47,6 +51,7 @@ double total_mass(vector<Celestial_object>& objects)
   return mass;
 }
 
+// Not used. Will be fore making lots of random celestial objects
 // void random_objects()
 // {
 //   std::mt19937 mt{std::random_device{}()};
@@ -63,47 +68,72 @@ double total_mass(vector<Celestial_object>& objects)
 // }
 
 
-
+// This is where the code begins.
 int main()
 {
   double distance_earth_moon{3.844e8};
   double circular_velocity = 1e6* sqrt(gravitational_constant * 5.972e24 / 5.972e22);
+
+  // Creates/opens a file (name saved in data_file) and clears the file
   std::ofstream file(data_file, std::ofstream::trunc);
 
-  
+  // Creates a vector of celestial objects.
   vector<Celestial_object> objects;
+
+  // The vector has a length of 2
   objects.reserve(2);
+
+  // Creates both Celestial objects
   Celestial_object earth(vector<double>(3,0), vector<double>(3,0), 6.378e6, 5.972e24);
   Celestial_object moon(vector<double>{distance_earth_moon, 0, 0}, std::vector<double>{0, circular_velocity, 0}, 1.17374e6, 7.34767309e22);
+
+  // Adds the celestial objects to the vector objects
   objects.push_back(earth);
   objects.push_back(moon);
+
+  // Makes the centre of mass the point (0, 0, 0)
   centre_of_mass(objects);
 
+  // oss is a buffer for strings and values
   std::ostringstream oss;
+
+  // Loops for time time required.
   for(int i{0}; i < total_time / delta_time; ++i)
   {
-    for(int j{0}; j < objects.size()-1; ++j){for(int k{j+1}; k < objects.size(); ++k){
-      objects[j].acceleration_between(objects[k]);
-    }}
+    for(int j{0}; j < objects.size()-1; ++j)
+    {
+      for(int k{j+1}; k < objects.size(); ++k)
+      {
+        // With the loops it should calculate the acceleration between all Celestial objects in the vector objects once
+        objects[j].acceleration_between(objects[k]);
+      }
+    }
     for(int j{0}; j < objects.size(); ++j)
     {
+      // The slowest bit of the code by far is writing to the file therefore instead of writing every 
+      //calculated coord it only writes it every output_time.
       if(remainder(i * delta_time, output_time) == 0)
       {
-        oss << "  ";
         for (int k = 0; k < 3; ++k) 
         {
+          // Rounds to the nearest integer so that 1e-96 is saved as 0 instead. 
+          // The 1e-96 occurs because double aren't infintely exact.
           oss << std::round(objects[j].coordinate[k]);
           oss << ", ";
         }
         oss << objects[j].get_radius();
         if (j < objects.size()-1){oss << ", ";}
       }
+      // This should use the leapfrog also known as verlet method to calculated the updated position and velocity
       objects[j].update_position_leapfrog();
       objects[j].update_velocity_leapfrog();
       objects[j].update_acceleration();
       objects[j].reset_acceleration();
     }
+    // Goes to the next line in the file
     if(remainder(i * delta_time, output_time) == 0){oss << '\n';}
+
+    // This codes makes the oss write to the file if it is holding more than 5MB worth of data
     if(oss.rdbuf()->pubseekoff(0, std::ios::end, std::ios::in) > (5 * 1024 * 1024))
     {
       file << oss.str();
@@ -111,6 +141,7 @@ int main()
       oss.clear();
     }
   }
+  // writes everything left in oss to the file and closes the file
   file << oss.str();
   oss.str("");
   oss.clear();

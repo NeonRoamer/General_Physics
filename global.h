@@ -3,6 +3,7 @@
 
 #include<string>
 
+// extern means that other files can use the variables here. i.e. the variables are global
 extern const std::string data_file;
 extern const double gravitational_constant; 
 

@@ -8,12 +8,14 @@
 #include "global.h"
 #include "celestial_object.h"
 
+// This creates the object and sets the input values to the corresponding variables.
 Celestial_object::Celestial_object(std::vector<double> coord, std::vector<double> velocity, double radius, double mass): coordinate{coord}, velocity{velocity}
 {
   set_mass(mass);
   set_radius(radius);
 }
 
+// This calculates the locations of the centre of mass between two objects
 std::vector<double> Celestial_object::centre_of_mass(Celestial_object& object)
 {
   std::vector<double> coord{std::vector<double>(3)};
@@ -21,6 +23,7 @@ std::vector<double> Celestial_object::centre_of_mass(Celestial_object& object)
   return coord;
 }
 
+// This combines the velocity of two objects
 std::vector<double> Celestial_object::combined_velocity(Celestial_object& object)
 {
   std::vector<double> velocity{std::vector<double>(3)};
@@ -28,11 +31,13 @@ std::vector<double> Celestial_object::combined_velocity(Celestial_object& object
   return velocity;
 }
 
+// This gets the distance between two objects
 double Celestial_object::get_distance(const Celestial_object& object)
 {
   return std::sqrt(pow(coordinate[0] - object.coordinate[0], 2) + pow(coordinate[1] - object.coordinate[1], 2) + pow(coordinate[2] - object.coordinate[2], 2));
 }
 
+// This finds the acceleration between two objects
 void Celestial_object::acceleration_between(Celestial_object& object)
 {
   double distance{get_distance(object)};
@@ -44,6 +49,7 @@ void Celestial_object::acceleration_between(Celestial_object& object)
   }
 }
 
+// Uses leapfrog method to calculate and update the position of the object
 void Celestial_object::update_position_leapfrog()
 {
   for(int i{0}; i < 3; ++i)
@@ -52,6 +58,7 @@ void Celestial_object::update_position_leapfrog()
   }
 }
 
+// Uses leapfrog method to calculate and update the velocity of the object
 void Celestial_object::update_velocity_leapfrog()
 {
   for(int i{0}; i < 3; ++i)
