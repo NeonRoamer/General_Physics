@@ -84,6 +84,7 @@ int main()
   objects.reserve(2);
 
   // Creates both Celestial objects
+  // The inputs is position, velocity, radius, and then mass
   Celestial_object earth(vector<double>(3,0), vector<double>(3,0), 6.378e6, 5.972e24);
   Celestial_object moon(vector<double>{distance_earth_moon, 0, 0}, std::vector<double>{0, circular_velocity, 0}, 1.17374e6, 7.34767309e22);
 

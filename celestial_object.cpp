@@ -19,7 +19,10 @@ Celestial_object::Celestial_object(std::vector<double> coord, std::vector<double
 std::vector<double> Celestial_object::centre_of_mass(Celestial_object& object)
 {
   std::vector<double> coord{std::vector<double>(3)};
-  for(int i{0}; i<3; ++i){coord[i] = ((m_mass * coordinate[i] + object.get_mass() * object.coordinate[i]) / (m_mass + object.get_mass()));}
+  for(int i{0}; i<3; ++i)
+  {
+    coord[i] = ((m_mass * coordinate[i] + object.get_mass() * object.coordinate[i]) / (m_mass + object.get_mass()));
+  }
   return coord;
 }
 
@@ -27,7 +30,10 @@ std::vector<double> Celestial_object::centre_of_mass(Celestial_object& object)
 std::vector<double> Celestial_object::combined_velocity(Celestial_object& object)
 {
   std::vector<double> velocity{std::vector<double>(3)};
-  for(int i{0}; i<3; ++i){velocity.push_back((m_mass * velocity[i] + object.get_mass() * object.velocity[i]) / (m_mass + object.get_mass()));}
+  for(int i{0}; i<3; ++i)
+  {
+    velocity.push_back((m_mass * velocity[i] + object.get_mass() * object.velocity[i]) / (m_mass + object.get_mass()));
+  }
   return velocity;
 }
 
@@ -67,6 +73,8 @@ void Celestial_object::update_velocity_leapfrog()
   }
 }
 
+// This defines what happens when Celestial_object1 + Celestial_object2. This is not currently used but
+// it will be useful for combining objects when they collide.
 Celestial_object Celestial_object::operator+(Celestial_object& object)
 {
   return Celestial_object(centre_of_mass(object), combined_velocity(object), m_mass + object.get_mass(), m_radius + object.get_radius());
