@@ -8,6 +8,7 @@
 #include<string> // std::string
 #include<sstream> // allows the storage of strings in a buffer before being displayed it's for optimisation
 #include<memory> // smart pointers (currently not in use)
+#include <chrono>
 #include "global.h" // This allows the use of the  file global.h and global.cpp
 #include "celestial_object.h" // This allows the use of the  file Celestial_objects.h and Celestial_objects.cpp
 
@@ -39,7 +40,10 @@ void centre_of_mass(vector<Celestial_object>& objects)
 
   for(int i{0}; i< 3; ++i)
   {
-    for(int j{0}; j < objects.size(); ++j){objects[j].coordinate[i] -= centre_mass_coord[i];}
+    for(int j{0}; j < objects.size(); ++j)
+    {
+      objects[j].coordinate[i] -= centre_mass_coord[i];
+    }
   }
 }
 
@@ -47,7 +51,10 @@ void centre_of_mass(vector<Celestial_object>& objects)
 double total_mass(vector<Celestial_object>& objects)
 {
   double mass{0};
-  for(int i{0}; i<objects.size(); ++i){mass += objects[i].get_mass();}
+  for(int i{0}; i<objects.size(); ++i)
+  {
+    mass += objects[i].get_mass();
+  }
   return mass;
 }
 
@@ -72,7 +79,7 @@ double total_mass(vector<Celestial_object>& objects)
 int main()
 {
   double distance_earth_moon{3.844e8};
-  double circular_velocity = 1e6* sqrt(gravitational_constant * 5.972e24 / 5.972e22);
+  double circular_velocity = 1020;
 
   // Creates/opens a file (name saved in data_file) and clears the file
   std::ofstream file(data_file, std::ofstream::trunc);
@@ -132,7 +139,10 @@ int main()
       objects[j].reset_acceleration();
     }
     // Goes to the next line in the file
-    if(remainder(i * delta_time, output_time) == 0){oss << '\n';}
+    if(remainder(i * delta_time, output_time) == 0)
+    {
+      oss << '\n';
+    }
 
     // This codes makes the oss write to the file if it is holding more than 5MB worth of data
     if(oss.rdbuf()->pubseekoff(0, std::ios::end, std::ios::in) > (5 * 1024 * 1024))

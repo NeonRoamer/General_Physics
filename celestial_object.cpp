@@ -73,9 +73,28 @@ void Celestial_object::update_velocity_leapfrog()
   }
 }
 
+void Celestial_object::update_position_rkf45()
+{
+  for(int i{0}; i < 3; ++i)
+  {
+
+    coordinate[i] = 2;
+  }
+}
+
+double Celestial_object::total_acceleration()
+{
+  return sqrt(m_old_acceleration[0]*m_old_acceleration[0] + m_old_acceleration[1]*m_old_acceleration[1] + m_old_acceleration[2]*m_old_acceleration[2]);
+}
+
+
+
+
 // This defines what happens when Celestial_object1 + Celestial_object2. This is not currently used but
 // it will be useful for combining objects when they collide.
 Celestial_object Celestial_object::operator+(Celestial_object& object)
 {
   return Celestial_object(centre_of_mass(object), combined_velocity(object), m_mass + object.get_mass(), m_radius + object.get_radius());
 }
+
+

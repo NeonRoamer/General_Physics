@@ -40,6 +40,9 @@ public:
   void acceleration_between(Celestial_object& object);
   void update_position_leapfrog();
   void update_velocity_leapfrog();
+  void update_position_rkf45();
+  void update_velocity_rkf45();
+  double total_acceleration();
   Celestial_object operator+(Celestial_object& object);
 
   // These set and get the values of variables in the private section

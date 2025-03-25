@@ -74,6 +74,9 @@
     "span": "cpp",
     "text_encoding": "cpp",
     "cinttypes": "cpp",
-    "variant": "cpp"
+    "variant": "cpp",
+    "chrono": "cpp",
+    "forward_list": "cpp",
+    "iomanip": "cpp"
   }
 }
