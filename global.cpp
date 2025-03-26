@@ -10,9 +10,9 @@ const std::string data_file("celestial_object_simulation.txt");
 const double gravitational_constant{6.67430e-11}; // Units m^3 kg^-1 s^-2
 
 // //Units in s
-const double delta_time{0.1}; // Time between calculations
-const int total_time{30*24*60*60}; // Total time of the simulation
-const int output_time{100};// time between each output to the file
+const double delta_time{1000}; // Time between calculations
+const double total_time{5.20344e9}; // Total time of the simulation
+const int output_time{5*24*60*60};// time between each output to the file
 
 
 // None of this is used right now it will be used to make random objects

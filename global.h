@@ -9,7 +9,7 @@ extern const double gravitational_constant;
 
 //Units in s
 extern const double delta_time;
-extern const int total_time;
+extern const double total_time;
 extern const int output_time;
 
 

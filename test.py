@@ -1,8 +1,3 @@
 # Given values
-distance = 3.844e8  # in meters (distance between Earth and Moon)
-mass_moon = 7.34767309e22  # in kilograms (mass of the Moon)
-mass_earth = 5.972e24  # in kilograms (mass of the Earth)
-
-# Calculate the barycenter distance from Earth's center
-barycenter_distance = (distance * mass_moon) / (mass_moon + mass_earth)
-print(barycenter_distance)
+print((28900 * 5.972e24+(28900 + 1022)*7.34767309e22+47400*3.302e23+35000*4.867e24+24100*6.417e23+13100*1.898e27+9700*5.684e26+6800*8.861e25+5400*1.024e24) / 1.9889e30)
+print(165*365*24*60*60)

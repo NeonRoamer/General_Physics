@@ -78,6 +78,7 @@ double total_mass(vector<Celestial_object>& objects)
 // This is where the code begins.
 int main()
 {
+  auto start = std::chrono::high_resolution_clock::now();
   double distance_earth_moon{3.844e8};
   double circular_velocity = 1020;
 
@@ -92,12 +93,28 @@ int main()
 
   // Creates both Celestial objects
   // The inputs is position, velocity, radius, and then mass
-  Celestial_object earth(vector<double>(3,0), vector<double>(3,0), 6.378e6, 5.972e24);
-  Celestial_object moon(vector<double>{distance_earth_moon, 0, 0}, std::vector<double>{0, circular_velocity, 0}, 1.17374e6, 7.34767309e22);
+  Celestial_object sun(std::vector<double>{0, 0, 0}, std::vector<double>{0, -15.768, 0}, 6.96e8, 1.9889e30);
+  Celestial_object earth(std::vector<double>{150e9, 0, 0}, std::vector<double>{0, 28900, 0}, 6.378e6, 5.972e24);
+  //Celestial_object moon(vector<double>{159e9, 3.844e8, 0}, std::vector<double>{-1022, 29922, 0}, 1.17374e6, 7.34767309e22);
+  Celestial_object mercury(std::vector<double>{58e9, 0, 0}, std::vector<double>{0, 47400, 0}, 2.44e6, 3.302e23);
+  Celestial_object venus(std::vector<double>{108e9, 0, 0}, std::vector<double>{0, 35000, 0}, 6.052e6, 4.867e24);
+  Celestial_object mars(std::vector<double>{228e9, 0, 0}, std::vector<double>{0, 24100, 0}, 3.39e6, 6.417e23);
+  Celestial_object jupiter(std::vector<double>{778e9, 0, 0}, std::vector<double>{0, 13100, 0}, 6.9911e7, 1.898e27);
+  Celestial_object saturn(std::vector<double>{1434e9, 0, 0}, std::vector<double>{0, 9700, 0}, 5.8232e7, 5.684e26);
+  Celestial_object uranus(std::vector<double>{2900e9, 0, 0}, std::vector<double>{0, 6800, 0}, 2.5362e7, 8.861e25);
+  Celestial_object neptune(std::vector<double>{4500e9, 0, 0}, std::vector<double>{0, 5400, 0}, 2.4622e7, 1.024e24);
 
   // Adds the celestial objects to the vector objects
   objects.push_back(earth);
-  objects.push_back(moon);
+  //objects.push_back(moon);
+  objects.push_back(sun);
+  objects.push_back(mercury);
+  objects.push_back(venus);
+  objects.push_back(mars);
+  objects.push_back(jupiter);
+  objects.push_back(saturn);
+  objects.push_back(uranus);
+  objects.push_back(neptune);
 
   // Makes the centre of mass the point (0, 0, 0)
   centre_of_mass(objects);
@@ -157,5 +174,8 @@ int main()
   oss.str("");
   oss.clear();
   file.close();
+  auto end = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+  std::cout << "Elapsed time: " << duration.count()/1000 << " seconds" << std::endl;
   return 0;
 }
