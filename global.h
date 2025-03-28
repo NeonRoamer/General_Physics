@@ -5,12 +5,14 @@
 
 // extern means that other files can use the variables here. i.e. the variables are global
 extern const std::string data_file;
+extern const std::string energy;
 extern const double gravitational_constant; 
 
 //Units in s
 extern const double delta_time;
 extern const double total_time;
 extern const int output_time;
+extern bool start_of_simulation;
 
 
 //Random Objects

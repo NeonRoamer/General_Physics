@@ -93,16 +93,16 @@ int main()
 
   // Creates both Celestial objects
   // The inputs is position, velocity, radius, and then mass
-  Celestial_object sun(std::vector<double>{0, 0, 0}, std::vector<double>{0, -15.768, 0}, 6.96e8, 1.9889e30);
-  Celestial_object earth(std::vector<double>{150e9, 0, 0}, std::vector<double>{0, 28900, 0}, 6.378e6, 5.972e24);
+  Celestial_object sun(std::vector<double>{0, 0, 0}, std::vector<double>{0, -15.768, 0}, 6.96e8, 1.9889e30, false, 0);
+  Celestial_object earth(std::vector<double>{150e9, 0, 0}, std::vector<double>{0, 28900, 0}, 6.378e6, 5.972e24, false, 0);
   //Celestial_object moon(vector<double>{159e9, 3.844e8, 0}, std::vector<double>{-1022, 29922, 0}, 1.17374e6, 7.34767309e22);
-  Celestial_object mercury(std::vector<double>{58e9, 0, 0}, std::vector<double>{0, 47400, 0}, 2.44e6, 3.302e23);
-  Celestial_object venus(std::vector<double>{108e9, 0, 0}, std::vector<double>{0, 35000, 0}, 6.052e6, 4.867e24);
-  Celestial_object mars(std::vector<double>{228e9, 0, 0}, std::vector<double>{0, 24100, 0}, 3.39e6, 6.417e23);
-  Celestial_object jupiter(std::vector<double>{778e9, 0, 0}, std::vector<double>{0, 13100, 0}, 6.9911e7, 1.898e27);
-  Celestial_object saturn(std::vector<double>{1434e9, 0, 0}, std::vector<double>{0, 9700, 0}, 5.8232e7, 5.684e26);
-  Celestial_object uranus(std::vector<double>{2900e9, 0, 0}, std::vector<double>{0, 6800, 0}, 2.5362e7, 8.861e25);
-  Celestial_object neptune(std::vector<double>{4500e9, 0, 0}, std::vector<double>{0, 5400, 0}, 2.4622e7, 1.024e24);
+  Celestial_object mercury(std::vector<double>{58e9, 0, 0}, std::vector<double>{0, 47400, 0}, 2.44e6, 3.302e23, false, 0);
+  Celestial_object venus(std::vector<double>{108e9, 0, 0}, std::vector<double>{0, 35000, 0}, 6.052e6, 4.867e24, false, 0);
+  Celestial_object mars(std::vector<double>{228e9, 0, 0}, std::vector<double>{0, 24100, 0}, 3.39e6, 6.417e23, false, 0);
+  Celestial_object jupiter(std::vector<double>{778e9, 0, 0}, std::vector<double>{0, 13100, 0}, 6.9911e7, 1.898e27, false, 0);
+  Celestial_object saturn(std::vector<double>{1434e9, 0, 0}, std::vector<double>{0, 9700, 0}, 5.8232e7, 5.684e26, false, 0);
+  Celestial_object uranus(std::vector<double>{2900e9, 0, 0}, std::vector<double>{0, 6800, 0}, 2.5362e7, 8.861e25, false, 0);
+  Celestial_object neptune(std::vector<double>{4500e9, 0, 0}, std::vector<double>{0, 5400, 0}, 2.4622e7, 1.024e24, false, 0);
 
   // Adds the celestial objects to the vector objects
   objects.push_back(earth);
@@ -168,6 +168,7 @@ int main()
       oss.str("");
       oss.clear();
     }
+    start_of_simulation = false;
   }
   // writes everything left in oss to the file and closes the file
   file << oss.str();

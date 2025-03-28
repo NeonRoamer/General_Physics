@@ -5,11 +5,12 @@
 #include<string>
 #include<iostream>
 #include<sstream>
+#include<cmath>
 #include "global.h"
 #include "celestial_object.h"
 
 // This creates the object and sets the input values to the corresponding variables.
-Celestial_object::Celestial_object(std::vector<double> coord, std::vector<double> velocity, double radius, double mass): coordinate{coord}, velocity{velocity}
+Celestial_object::Celestial_object(std::vector<double> coord, std::vector<double> velocity, double radius, double mass, bool instant_force, double force): coordinate{coord}, velocity{velocity}, m_instant_force{instant_force}, m_force{force}
 {
   set_mass(mass);
   set_radius(radius);
@@ -48,10 +49,31 @@ void Celestial_object::acceleration_between(Celestial_object& object)
 {
   double distance{get_distance(object)};
   double force{gravitational_constant * m_mass * object.get_mass() / (distance * distance * distance)};
+  if((m_instant_force == false & time == 0) || m_instant_force == true)
+  {
+    for(int i{0}; i<3; ++i)
+    {
+      m_new_acceleration[i] += (force + m_force) * (object.coordinate[i] - coordinate[i]) / m_mass;
+    }
+  }
+  else 
+  {
+    for(int i{0}; i<3; ++i)
+    {
+      m_new_acceleration[i] += force * (object.coordinate[i] - coordinate[i]) / m_mass;
+    }
+  }
+  if((object.m_instant_force == false & time == 0) || object.m_instant_force == true)
   for(int i{0}; i<3; ++i)
   {
-    m_new_acceleration[i] += force * (object.coordinate[i] - coordinate[i]) / m_mass;
-    object.m_new_acceleration[i] += force * (coordinate[i] - object.coordinate[i]) / object.get_mass();
+    object.m_new_acceleration[i] += (force + object.m_force) * (coordinate[i] - object.coordinate[i]) / object.get_mass();
+  }
+  else
+  {
+    for(int i{0}; i<3; ++i)
+    {
+      object.m_new_acceleration[i] += force * (coordinate[i] - object.coordinate[i]) / object.get_mass();
+    }
   }
 }
 
@@ -87,14 +109,17 @@ double Celestial_object::total_acceleration()
   return sqrt(m_old_acceleration[0]*m_old_acceleration[0] + m_old_acceleration[1]*m_old_acceleration[1] + m_old_acceleration[2]*m_old_acceleration[2]);
 }
 
-
+double Celestial_object::get_energy()
+{
+  return 0.5 * m_mass * sqrt(velocity[0] * velocity[0] + velocity[1] * velocity[1] + velocity[2] * velocity[2]);
+}
 
 
 // This defines what happens when Celestial_object1 + Celestial_object2. This is not currently used but
 // it will be useful for combining objects when they collide.
-Celestial_object Celestial_object::operator+(Celestial_object& object)
-{
-  return Celestial_object(centre_of_mass(object), combined_velocity(object), m_mass + object.get_mass(), m_radius + object.get_radius());
-}
+// Celestial_object Celestial_object::operator+(Celestial_object& object)
+// {
+//   return Celestial_object(centre_of_mass(object), combined_velocity(object), m_mass + object.get_mass(), m_radius + object.get_radius());
+// }
 
 

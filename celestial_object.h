@@ -7,6 +7,7 @@
 // equivalent of import
 #include<vector>
 #include<numbers>
+#include<cmath>
 
 // allows me to write vector instead of std::vector everywhere
 using std::vector;
@@ -25,13 +26,15 @@ private:
 public:
   vector<double> coordinate{vector<double>(3)}; // Units in m
   vector<double> velocity{vector<double>(3)}; // Units in m/s
+  bool m_instant_force{true}; // true is instant false is continuos
+  double m_force{0}; // in N
 
   // This creates the object when no inputs are given
   Celestial_object() = default;
   // This destroys the object
   ~Celestial_object(){};
   // This creates the object with inputs
-  Celestial_object(vector<double> coord, vector<double> velocity, double radius, double mass);
+  Celestial_object(vector<double> coord, vector<double> velocity, double radius, double mass, bool instant_force, double force);
 
   // These are member functions
   vector<double> centre_of_mass(Celestial_object& object);
@@ -44,6 +47,7 @@ public:
   void update_velocity_rkf45();
   double total_acceleration();
   Celestial_object operator+(Celestial_object& object);
+  double get_energy();
 
   // These set and get the values of variables in the private section
   void set_mass(double mass){if(mass > 0){m_mass = mass;}}
