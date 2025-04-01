@@ -49,7 +49,8 @@ void Celestial_object::acceleration_between(Celestial_object& object)
 {
   double distance{get_distance(object)};
   double force{gravitational_constant * m_mass * object.get_mass() / (distance * distance * distance)};
-  if((m_instant_force == false & time == 0) || m_instant_force == true)
+
+  if((m_instant_force == true & time == 0 & first_calculation) || (m_instant_force == true & first_calculation))
   {
     for(int i{0}; i<3; ++i)
     {
@@ -63,7 +64,7 @@ void Celestial_object::acceleration_between(Celestial_object& object)
       m_new_acceleration[i] += force * (object.coordinate[i] - coordinate[i]) / m_mass;
     }
   }
-  if((object.m_instant_force == false & time == 0) || object.m_instant_force == true)
+  if((object.m_instant_force == true & time == 0 & object.first_calculation) || (object.m_instant_force == false & object.first_calculation))
   for(int i{0}; i<3; ++i)
   {
     object.m_new_acceleration[i] += (force + object.m_force) * (coordinate[i] - object.coordinate[i]) / object.get_mass();
@@ -75,6 +76,9 @@ void Celestial_object::acceleration_between(Celestial_object& object)
       object.m_new_acceleration[i] += force * (coordinate[i] - object.coordinate[i]) / object.get_mass();
     }
   }
+
+  first_calculation = false;
+  object.first_calculation = false;
 }
 
 // Uses leapfrog method to calculate and update the position of the object
@@ -95,25 +99,42 @@ void Celestial_object::update_velocity_leapfrog()
   }
 }
 
-void Celestial_object::update_position_rkf45()
+void Celestial_object::rk5_acceleration(double delta_t, double temp_velocity, Celestial_object& object, int axis)
 {
-  for(int i{0}; i < 3; ++i)
-  {
+  vector<double> temp_position1{coordinate};
+  vector<double> temp_position2{object.coordinate};
+  temp_position1[axis] += temp_velocity * delta_t;
+  for(int i{1}; i < 3; ++i){temp_position1[i] += velocity[i] * delta_t;}
+  for(int i{0}; i < 3; ++i){temp_position2[i] += object.velocity[i] * delta_t;}
 
-    coordinate[i] = 2;
+  double distance{std::sqrt(pow(temp_position1[0] - temp_position2[0], 2) + pow(temp_position1[1] - temp_position2[1], 2) + pow(temp_position1[2] - temp_position2[2], 2))};
+  double force{gravitational_constant * object.get_mass() / (distance * distance * distance)};
+  if((m_instant_force == true & time == 0 & first_calculation) || (m_instant_force == true & first_calculation))
+  {
+    p_rk5_acceleration += (force + m_force) * (temp_position2[axis] - temp_position1[axis]);
   }
+  else{p_rk5_acceleration += force * (temp_position2[axis] - temp_position1[axis]);}
+
+  first_calculation = false;
 }
+
+
+
 
 double Celestial_object::total_acceleration()
 {
-  return sqrt(m_old_acceleration[0]*m_old_acceleration[0] + m_old_acceleration[1]*m_old_acceleration[1] + m_old_acceleration[2]*m_old_acceleration[2]);
+  return sqrt(m_old_acceleration[0]*m_old_acceleration[0] + m_old_acceleration[1]*m_old_acceleration[1] + m_old_acceleration[2] * m_old_acceleration[2]);
 }
 
 double Celestial_object::get_energy()
 {
-  return 0.5 * m_mass * sqrt(velocity[0] * velocity[0] + velocity[1] * velocity[1] + velocity[2] * velocity[2]);
+  return 0.5 * m_mass * (velocity[0] * velocity[0] + velocity[1] * velocity[1] + velocity[2] * velocity[2]);
 }
 
+double Celestial_object::get_momentum()
+{
+  return m_mass * sqrt(velocity[0] * velocity[0] + velocity[1] * velocity[1] + velocity[2] * velocity[2]);
+}
 
 // This defines what happens when Celestial_object1 + Celestial_object2. This is not currently used but
 // it will be useful for combining objects when they collide.
