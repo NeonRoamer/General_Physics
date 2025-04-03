@@ -4,6 +4,7 @@
 #include<vector>
 
 extern const double G;
+extern const double pi;
 extern const double mass_earth;
 extern const double mass_moon;
 extern const double radius_earth;
@@ -105,6 +106,10 @@ std::vector<double> operator/(const double& s1, const std::vector<double>& v1);
 std::vector<double> operator/(const std::vector<double>& v1, const int& s1);
 
 std::vector<double> operator/(const int& s1, const std::vector<double>& v1);
+
+void operator*=(std::vector<double>& v1, const double& s1);
+
+void operator/=(std::vector<double>& v1, const double& s1);
 
 double abs(const std::vector<double>& v1);
 

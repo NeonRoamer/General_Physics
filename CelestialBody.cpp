@@ -4,6 +4,7 @@
 #include "CelestialBody.h"
 
 const double G = 6.6743e-11; //standard units
+const double pi = 3.14159265359;
 const double mass_earth = 5.9722e24; //kg
 const double mass_moon = 7.348e22; //kg
 const double radius_earth = 6.378e6; //m
@@ -202,6 +203,18 @@ std::vector<double> operator/(const int& s1, const std::vector<double>& v1)
   std::vector<double> temp(v1.size());
   for(int i = 0; i < v1.size(); i++) temp[i] = s1 / v1[i];
   return temp;
+}
+
+void operator*=(std::vector<double>& v1, const double& s1)
+{
+  for(auto i=v1.begin(); i<v1.end(); i++) *i *= s1;
+  return;
+}
+
+void operator/=(std::vector<double>& v1, const double& s1)
+{
+  for(auto i = v1.begin(); i < v1.end(); i++) *i /= s1;
+  return;
 }
 
 double abs(const std::vector<double>& v1)
