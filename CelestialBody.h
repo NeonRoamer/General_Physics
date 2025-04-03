@@ -55,7 +55,7 @@ public:
   double get_radius() const {return radius;}
 };
 
-//Friend functions
+//Member functions
 std::vector<double> acceleration_calc(const int& i, const int& rkf45_step, const std::vector<CelestialBody>& bodies);
 std::vector<double> acceleration_calc(const int& i, const int& rkf45_step, const std::vector<CelestialBody>& bodies, const std::vector<std::vector<double>>& const_acc);
 void rkf45_evaluate_coeffs(const double& delta_t, std::vector<CelestialBody>& bodies);

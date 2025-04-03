@@ -29,12 +29,6 @@ public:
   vector<double> velocity{vector<double>(3)}; // Units in m/s
   bool m_instant_force{true}; // true is instant false is continuos
   double m_force{0}; // in N
-  double p_rk5_acceleration{0};
-  double k1{0};
-  double k2{0};
-  double k3{0};
-  double k4{0};
-  double k5{0};
 
   // This creates the object when no inputs are given
   Celestial_object() = default;
@@ -50,12 +44,11 @@ public:
   void acceleration_between(Celestial_object& object);
   void update_position_leapfrog();
   void update_velocity_leapfrog();
-  void rk5_acceleration(double delta_t, double velocity, Celestial_object& object, int axis);
 
 
   double total_acceleration();
   Celestial_object operator+(Celestial_object& object);
-  double get_energy();
+  double get_energy(std::vector<Celestial_object>& objects);
 
   // These set and get the values of variables in the private section
   void set_mass(double mass){if(mass > 0){m_mass = mass;}}

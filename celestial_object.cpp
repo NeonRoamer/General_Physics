@@ -99,36 +99,23 @@ void Celestial_object::update_velocity_leapfrog()
   }
 }
 
-void Celestial_object::rk5_acceleration(double delta_t, double temp_velocity, Celestial_object& object, int axis)
-{
-  vector<double> temp_position1{coordinate};
-  vector<double> temp_position2{object.coordinate};
-  temp_position1[axis] += temp_velocity * delta_t;
-  for(int i{1}; i < 3; ++i){temp_position1[i] += velocity[i] * delta_t;}
-  for(int i{0}; i < 3; ++i){temp_position2[i] += object.velocity[i] * delta_t;}
-
-  double distance{std::sqrt(pow(temp_position1[0] - temp_position2[0], 2) + pow(temp_position1[1] - temp_position2[1], 2) + pow(temp_position1[2] - temp_position2[2], 2))};
-  double force{gravitational_constant * object.get_mass() / (distance * distance * distance)};
-  if((m_instant_force == true & time == 0 & first_calculation) || (m_instant_force == true & first_calculation))
-  {
-    p_rk5_acceleration += (force + m_force) * (temp_position2[axis] - temp_position1[axis]);
-  }
-  else{p_rk5_acceleration += force * (temp_position2[axis] - temp_position1[axis]);}
-
-  first_calculation = false;
-}
-
-
-
-
 double Celestial_object::total_acceleration()
 {
   return sqrt(m_old_acceleration[0]*m_old_acceleration[0] + m_old_acceleration[1]*m_old_acceleration[1] + m_old_acceleration[2] * m_old_acceleration[2]);
 }
 
-double Celestial_object::get_energy()
+double Celestial_object::get_energy(std::vector<Celestial_object>& objects)
 {
-  return 0.5 * m_mass * (velocity[0] * velocity[0] + velocity[1] * velocity[1] + velocity[2] * velocity[2]);
+  double kenetic_energy{0.5 * m_mass * (velocity[0] * velocity[0] + velocity[1] * velocity[1] + velocity[2] * velocity[2])};
+  double potential_energy{0};
+  for(int i{0}; i<objects.size(); ++i)
+  {
+    if(this != &objects[i])
+    {
+      potential_energy += gravitational_constant * m_mass * objects[i].get_mass() / this->get_distance(objects[i]);
+    }
+  }
+  return kenetic_energy + potential_energy;
 }
 
 double Celestial_object::get_momentum()
