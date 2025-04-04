@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib import colors, cm
 
 paths = {}
-with open("celestial_object_simulation.txt", "r") as file:
+with open("celestial_object_simulation_single.txt", "r") as file:
 	for line in file:
 		line = np.array(line.strip("\n").split(", "), dtype=float)
 		for i in range(int(len(line)/4)):

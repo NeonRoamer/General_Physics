@@ -127,10 +127,10 @@ int main()
 
     if(continuous_force)
     {
-      acceleration = 10*acc(mt);
+      acceleration = acc(mt);
       asteriod.m_instant_force = false;
     }
-    else{acceleration = 1e300*impulse(mt) / delta_time;}
+    //else{acceleration = 1e300*impulse(mt) / delta_time;}
     
     double theta_value{theta(mt)};
     double phi_value{phi(mt)};

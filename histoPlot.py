@@ -42,9 +42,10 @@ def generate_collision_histogram(filepath):
         plt.ylim(np.max(x_collisions))
         plt.hist2d(x_collisions, y_collisions, bins=50, cmap='RdPu', range=[[1e21, np.max(x_collisions)], [1e21, np.max(x_collisions)]]) # you can change the number of bins.
         plt.colorbar(label='Number of Collisions')
-        plt.xlabel('X Coordinate')
-        plt.ylabel('Y Coordinate')
+        plt.xlabel('Force in X axis / N')
+        plt.ylabel('Force in Y axis / N')
         plt.title('2D Histogram of Collisions')
+        plt.savefig("figures/Histogram_leapfrog.png", dpi=1000)
         plt.show()
 
     except FileNotFoundError:
