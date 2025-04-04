@@ -1,0 +1,35 @@
+Setting initial conditions
+	(Asteroid is based off of Ceres)
+	Mass of Earth = 5.9722e24 kg
+	Mass of Moon = 7.348e22
+	Mass of Asteroid (Ceres) = 9.39e20 kg
+
+	Radius of Earth = 6.378e6 m
+	Radius of Moon = 1.737e6 m
+	Radius of Asteroid = 4.73e5 m
+
+	* = Before further adjustments
+	Earth initial position = [0, 0, 0] m
+	Moon initial position = [3.844e8, 0, 0] m
+	*Asteroid initial position = [3.88e9, 0, 0] m
+		
+	*Earth initial velocity = [0, 0, 0] ms^-1
+	*Moon initial velocity = [0, 1.022e3, 0] ms^-1
+	*Asteroid initial velocity = [-3.88e9/(60*60*24*15), 0, 0] ms^-1 -> Set velocity so the asteroid arrives in 15 days
+
+	Apply the accelerations at an angle theta (0 = along +x axis), and phi about x axis (0 = along +y axis)
+		These are angles relative to displacement vector from the earth to the asteroid
+
+	Rotate the asteroid position, velocity and acceleration about the y axis by an inclination angle (inc) using the matrix:
+		[[cos(inc),	0, -sin(inc)],
+		 [	0,	1,	0],
+		 [sin(inc),	0, cos(inc)]]
+
+	Reset the velocity of the Earth to deduct drift
+
+	Do simulation
+	
+	Repeat the simulations for random values in a range of acceleration magnitudes and theta/phi, log the results (collision/avoid) with the set acceleration magnitudes and theta/phi
+
+Range to test constant acceleration: 1e15 - 1.5e16 N
+Range to test deflection impulse: 1e21 - 1e22 Ns
