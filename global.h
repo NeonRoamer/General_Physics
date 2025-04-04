@@ -7,9 +7,10 @@
 extern const std::string data_file;
 extern const std::string energy_file;
 extern const std::string momentum_file;
+extern const std::string collision_file;
 extern const double gravitational_constant;
 extern const bool leapfrog_method;
-extern const bool rk5_method;
+extern const int n_test;
 
 //Units in s
 extern const double delta_time;
@@ -19,16 +20,11 @@ extern bool start_of_simulation;
 
 
 //Random Objects
-extern const bool random_obj;
-extern const int number_of_objects;
-//Units in kg
-extern const double min_mass;
-extern const double max_mass;
+extern const bool continuous_force;
+extern const double min_acc;// N
+extern const double max_acc;// N
 
-//Units in m
-extern const double min_radius;
-extern const double max_radius;
-extern const double min_coord;
-extern const double max_coord;
+extern const double min_impulse;// Ns
+extern const double max_impulse;// Ns
 
 #endif

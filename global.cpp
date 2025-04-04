@@ -9,31 +9,26 @@
 const std::string data_file("celestial_object_simulation.txt");
 const std::string energy_file("celestial_object_energy.txt");
 const std::string momentum_file("celestial_object_momentum.txt");
+const std::string collision_file("force.txt");
 const double gravitational_constant{6.67430e-11}; // Units m^3 kg^-1 s^-2
 const bool leapfrog_method{true};
+const int n_test{100};
 
 //keep this false it doesn't work
-const bool rk5_method{false};
 
 // //Units in s
-const double delta_time{100}; // Time between calculations
-const double total_time{365*24*60*60}; // Total time of the simulation
-const int output_time{12*60*60}; // time between each output to the file
+const double delta_time{10}; // Time between calculations
+const double total_time{15*24*60*60}; // Total time of the simulation
+const int output_time{60*60}; // time between each output to the file
 bool start_of_simulation{true};
 
 
 // None of this is used right now it will be used to make random objects
 //Random Objects
-const bool random_obj{false};
-const int number_of_objects{7};
+const bool continuous_force{false};
 
-//Units in kg
-const double min_mass{5e24};
-const double max_mass{1e28};
+const double min_acc{1e15};// N
+const double max_acc{1.5e16};// N
 
-//Units in m
-const double min_radius{4e6};
-const double max_radius{10e9};
-const double min_coord{10};
-const double max_coord{15};
-
+const double min_impulse{1e21};// Ns
+const double max_impulse{1e22};// Ns

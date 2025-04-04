@@ -28,14 +28,14 @@ public:
   vector<double> coordinate{vector<double>(3)}; // Units in m
   vector<double> velocity{vector<double>(3)}; // Units in m/s
   bool m_instant_force{true}; // true is instant false is continuos
-  double m_force{0}; // in N
+  vector<double> m_acc{vector<double>(3)}; // in N
 
   // This creates the object when no inputs are given
   Celestial_object() = default;
   // This destroys the object
   ~Celestial_object(){};
   // This creates the object with inputs
-  Celestial_object(vector<double> coord, vector<double> velocity, double radius, double mass, bool instant_force, double force);
+  Celestial_object(vector<double> coord, vector<double> velocity, double radius, double mass);
 
   // These are member functions
   vector<double> centre_of_mass(Celestial_object& object);

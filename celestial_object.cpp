@@ -10,7 +10,7 @@
 #include "celestial_object.h"
 
 // This creates the object and sets the input values to the corresponding variables.
-Celestial_object::Celestial_object(std::vector<double> coord, std::vector<double> velocity, double radius, double mass, bool instant_force, double force): coordinate{coord}, velocity{velocity}, m_instant_force{instant_force}, m_force{force}
+Celestial_object::Celestial_object(std::vector<double> coord, std::vector<double> velocity, double radius, double mass): coordinate{coord}, velocity{velocity}
 {
   set_mass(mass);
   set_radius(radius);
@@ -50,31 +50,20 @@ void Celestial_object::acceleration_between(Celestial_object& object)
   double distance{get_distance(object)};
   double force{gravitational_constant * m_mass * object.get_mass() / (distance * distance * distance)};
 
-  if((m_instant_force == true & time == 0 & first_calculation) || (m_instant_force == true & first_calculation))
-  {
-    for(int i{0}; i<3; ++i)
-    {
-      m_new_acceleration[i] += (force + m_force) * (object.coordinate[i] - coordinate[i]) / m_mass;
-    }
-  }
-  else 
-  {
-    for(int i{0}; i<3; ++i)
-    {
-      m_new_acceleration[i] += force * (object.coordinate[i] - coordinate[i]) / m_mass;
-    }
-  }
-  if((object.m_instant_force == true & time == 0 & object.first_calculation) || (object.m_instant_force == false & object.first_calculation))
   for(int i{0}; i<3; ++i)
   {
-    object.m_new_acceleration[i] += (force + object.m_force) * (coordinate[i] - object.coordinate[i]) / object.get_mass();
+    m_new_acceleration[i] += (force) * (object.coordinate[i] - coordinate[i]) / m_mass;
+    object.m_new_acceleration[i] += force * (coordinate[i] - object.coordinate[i]) / object.get_mass();
   }
-  else
+
+  if((m_instant_force && time == 0 && first_calculation) || (m_instant_force == false && first_calculation))
   {
-    for(int i{0}; i<3; ++i)
-    {
-      object.m_new_acceleration[i] += force * (coordinate[i] - object.coordinate[i]) / object.get_mass();
-    }
+    for(int i{0}; i<3; ++i){m_new_acceleration[i] += m_acc[i]/m_mass;}
+  }
+
+  if((object.m_instant_force && time == 0 && object.first_calculation) || (object.m_instant_force == false && object.first_calculation))
+  {
+    for(int i{0}; i<3; ++i){object.m_new_acceleration[i] += object.m_acc[i]/object.m_mass;}
   }
 
   first_calculation = false;
@@ -112,7 +101,7 @@ double Celestial_object::get_energy(std::vector<Celestial_object>& objects)
   {
     if(this != &objects[i])
     {
-      potential_energy += gravitational_constant * m_mass * objects[i].get_mass() / this->get_distance(objects[i]);
+      potential_energy -= gravitational_constant * m_mass * objects[i].get_mass() / this->get_distance(objects[i]);
     }
   }
   return kenetic_energy + potential_energy;
