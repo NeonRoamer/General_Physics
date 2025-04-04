@@ -69,25 +69,26 @@ int main()
   std::uniform_real_distribution rand_angle( 0.0, pi );
 
   double inc_angle{rand_angle(mt)/2};
+  //inc_angle = pi/2;
   std::vector<double> asteroid_pos{init_r, 0, 0};
   std::vector<double> asteroid_vel{-init_v, 0, 0};
   
-  double imparted_theta = pi/2, imparted_phi = pi/2; //Polar angles of applied force/impulse relative to initial displacement to asteroid
+  double imparted_theta = 0, imparted_phi = pi/2; //Polar angles of applied force/impulse relative to initial displacement to asteroid
   
   //Kinetic impactor
-  /*
+  //*
   double mass_dart = 610, speed_dart = 6.6e3; //kg, ms^-1
   double asteroid_impulse_mag = mass_dart * speed_dart; // Ns, impulse delivered by Dart probe
   std::vector<double> asteroid_impulse_vec{cos(imparted_theta), sin(imparted_theta)*cos(imparted_phi), sin(imparted_theta)*sin(imparted_phi)};  //Before random rotation about y axis
-  asteroid_impulse_mag = 1e22;
+  asteroid_impulse_mag = 4e24;
   asteroid_impulse_vec*=asteroid_impulse_mag;
   //asteroid_impulse_vec*=0;
   asteroid_vel = (asteroid_vel*mass_ceres + asteroid_impulse_vec) / (mass_ceres + mass_dart);
-  */
+  //*/
   
   //Gravity tractor - Add const_acc at end of evaluate coeffs function - it's overloaded
-  //*
-  double asteroid_force_mag = 1.5e16; //N  - Average tractor force found on wikipedia = 0.032N, but would be applied over 10 years
+  /*
+  double asteroid_force_mag = 10e16; //N  - Average tractor force found on wikipedia = 0.032N, but would be applied over 10 years
   std::vector<double> asteroid_force_vec{ cos(imparted_theta), sin(imparted_theta) * cos(imparted_phi), sin(imparted_theta) * sin(imparted_phi) };
   asteroid_force_vec*=asteroid_force_mag;
   yax_rotation(asteroid_force_vec, inc_angle);
@@ -149,7 +150,7 @@ int main()
     for(int i=0; i<3; i++) std::cout<<"e"<<i<<": "<<body->get_position()[i]<<", v"<<i << ": " <<body->get_velocity()[i]<<std::endl;
   }
 
-  const double tolerance = 5e4;
+  const double tolerance = 1e6;
   const double time_delta_init = 3600;
   const double time_delta_min = 60;
 
@@ -202,8 +203,8 @@ int main()
     std::string stop_str;
     do
     {
-      rkf45_evaluate_coeffs(time_delta, bodies, const_acc);
-      //rkf45_evaluate_coeffs(time_delta, bodies);
+      //rkf45_evaluate_coeffs(time_delta, bodies, const_acc);
+      rkf45_evaluate_coeffs(time_delta, bodies);
 
       error = 0;
       for(int i=0; i<bodies.size(); i++) error += pow(abs(fifth_order_position(bodies[i]) - fourth_order_position(bodies[i])), 2) + pow(time_delta*abs(fifth_order_velocity(bodies[i]) - fourth_order_velocity(bodies[i])), 2);
